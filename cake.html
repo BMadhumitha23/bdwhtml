@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cake Animation</title>
+  <style>
+    :root {
+      --cake-large: clamp(120px, 30vw, 200px);
+      --cake-medium: clamp(90px, 22vw, 160px);
+      --cake-small: clamp(60px, 14vw, 120px);
+      --gift-size: clamp(40px, 15vw, 70px);
+      --photo-size: clamp(80px, 25vw, 140px);
+      --font-size: clamp(1.2rem, 5vw, 2rem);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: linear-gradient(to bottom, #ffe4e1, #ffc0cb);
+      font-family: 'Segoe UI', sans-serif;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      padding: 10px;
+      text-align: center;
+    }
+    .container {
+      position: relative;
+      animation: popUp 2s ease-in-out;
+    }
+    .layer-1, .layer-2, .layer-3 {
+      border-radius: 15px;
+      margin: 0 auto;
+    }
+    .layer-1 {
+      background: #ff9999;
+      width: var(--cake-large);
+      height: calc(var(--cake-large) * 0.3);
+      animation: riseUp 1s ease-in-out 0.9s backwards;
+    }
+    .layer-2 {
+      background: #ff66b2;
+      width: var(--cake-medium);
+      height: calc(var(--cake-medium) * 0.3);
+      animation: riseUp 1s ease-in-out 0.6s backwards;
+      margin-top: calc(-1 * var(--cake-medium) * 0.15);
+    }
+    .layer-3 {
+      background: #cc3399;
+      width: var(--cake-small);
+      height: calc(var(--cake-small) * 0.6);
+      animation: riseUp 1s ease-in-out 0.3s backwards;
+      margin-top: calc(-1 * var(--cake-small) * 0.15);
+    }
+    .candle {
+      width: calc(var(--cake-small) * 0.08);
+      height: calc(var(--cake-small) * 0.32);
+      background: #fffacd;
+      border-radius: 2px;
+      position: absolute;
+      top: calc(-1 * var(--cake-small) * 0.5);
+      left: 50%;
+      transform: translateX(-50%);
+      animation: riseUp 1s ease-in-out 1.2s backwards;
+    }
+    .candle::before {
+      content: '';
+      width: 100%;
+      height: 40%;
+      background: radial-gradient(ellipse at center, #ff0, #ff8c00);
+      position: absolute;
+      top: -40%;
+      border-radius: 50%;
+      animation: flicker 0.2s infinite alternate;
+      box-shadow: 0 0 10px 5px rgba(255, 140, 0, 0.5);
+    }
+    .name {
+      font-size: var(--font-size);
+      color: #d60087;
+      font-weight: bold;
+      margin-top: 20px;
+      animation: fadeInUp 2s ease-in-out 1.5s forwards;
+      opacity: 0;
+      letter-spacing: 2px;
+      text-shadow: 1px 1px 3px #fff;
+    }
+    .gift-container {
+      position: absolute;
+      top: 15%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      z-index: 2;
+    }
+    .gift-container.left { left: 5%; }
+    .gift-container.right { right: 5%; }
+    .gift-box {
+      width: var(--gift-size);
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+    .gift-box:hover { transform: scale(1.1); }
+    .hidden-photo {
+      width: var(--photo-size);
+      margin-top: 10px;
+      display: none;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #333;
+      animation: fadeIn 1s ease-in-out forwards;
+    }
+    .glitter-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 1;
+    }
+    .white-glitter {
+      position: absolute;
+      top: -10px;
+      width: 6px;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.8);
+      border-radius: 50%;
+      animation: glitterFall 4s linear forwards;
+    }
+    .pink-glitter {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      pointer-events: none;
+      animation: glitterFall linear forwards;
+    }
+    @media (max-width: 600px) {
+      .gift-container.left { left: 2%; top: 12%; }
+      .gift-container.right { right: 2%; top: 12%; }
+      .name { margin-top: 15px; font-size: 1.4rem; }
+    }
+    @keyframes flicker {
+      from { transform: scale(1); opacity: 1; }
+      to { transform: scale(1.1); opacity: 0.7; }
+    }
+    @keyframes fadeInUp {
+      from { transform: translateY(20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    @keyframes riseUp {
+      from { transform: translateY(100px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    @keyframes popUp {
+      from { transform: scale(0.8); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+    @keyframes glitterFall {
+      0% { transform: translateY(0); opacity: 1; }
+      100% { transform: translateY(100vh); opacity: 0; }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
+    }
+  </style>
+</head>
+<body>
+  <div class="glitter-container" id="white-glitter"></div>
+  <div class="gift-container left">
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQRvTWdizfEvO8t2poyGDN_VF3mO9efj8DPrA&s" class="gift-box" onclick="reveal('left')" />
+    <img src="C:\Users\Mathumitha\OneDrive\文档\WhatsApp Image 2025-06-22 at 21.39.33_a6161468.jpg" class="hidden-photo" id="photo-left"  height="140"/>
+  </div>
+  <div class="container">
+    <div class="candle"></div>
+    <div class="layer-3"></div>
+    <div class="layer-2"></div>
+    <div class="layer-1"></div>
+  </div>
+  <div class="gift-container right">
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQRvTWdizfEvO8t2poyGDN_VF3mO9efj8DPrA&s" class="gift-box" onclick="reveal('right')" />
+    <img src="C:\Users\Mathumitha\OneDrive\文档\WhatsApp Image 2025-06-22 at 21.39.20_b9941b43.jpg" class="hidden-photo" id="photo-right"  height="140"/>
+  </div>
+  <div class="name">HAPPY BIRTHDAY BHAVANA</div>
+  <script>
+    const whiteGlitterContainer = document.getElementById('white-glitter');
+    function createWhiteGlitter() {
+      const glitter = document.createElement('div');
+      glitter.className = 'white-glitter';
+      glitter.style.left = `${Math.random() * 100}vw`;
+      glitter.style.animationDelay = `${Math.random() * 3}s`;
+      glitter.style.opacity = Math.random();
+      whiteGlitterContainer.appendChild(glitter);
+      setTimeout(() => glitter.remove(), 4000);
+    }
+    setInterval(createWhiteGlitter, 100);
+    function reveal(side) {
+      document.getElementById(`photo-${side}`).style.display = 'block';
+      const container = document.createElement('div');
+      container.className = 'glitter-container';
+      document.body.appendChild(container);
+      for (let i = 0; i < 20; i++) {
+        const g = document.createElement('img');
+        g.src = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQZmgroJlzYZ3JtsEh4lEpTMTDarF4-pfUj5A&s';
+        g.className = 'pink-glitter';
+        g.style.left = `${Math.random() * 100}vw`;
+        g.style.animationDuration = `${Math.random() * 2 + 2}s`;
+        g.style.opacity = Math.random();
+        container.appendChild(g);
+        setTimeout(() => g.remove(), 3000);
+      }
+      setTimeout(() => container.remove(), 3500);
+    }
+  </script>
+</body>
+</html>
